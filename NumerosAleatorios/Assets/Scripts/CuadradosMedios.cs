@@ -9,17 +9,20 @@ public class CuadradosMedios : MonoBehaviour
 
     public InputField semillaInput;
     public InputField nInput;
+    public GameObject CanvasReference;
     public GameObject Row;
+    public GameObject TablePrefab;
     public GameObject Semilla;
     public GameObject Generador;
     public GameObject Numero_aleatorio;
     public GameObject Ri;
     public GameObject Content;
     public void generarNumeros(){
+        resetTable();
         //Recibir los input
         int semilla = int.Parse(semillaInput.text);
         int n = int.Parse(nInput.text);
-
+    
         //Se eleva al cuadrado
         float n_generado = Mathf.Pow(semilla,2);
         //Se da formato de 8 numeros
@@ -66,6 +69,22 @@ public class CuadradosMedios : MonoBehaviour
         Generador.GetComponent<Text>().text = generador;
         Numero_aleatorio.GetComponent<Text>().text = nAleatorio;
         Ri.GetComponent<Text>().text= ri.ToString("0.0000");
+    }
+    public void resetValues(){
+        semillaInput.text = "";
+        nInput.text="";
+        resetTable();
+    }
+
+    public void resetTable(){
+        if (GameObject.Find("Table")){
+            Destroy(GameObject.Find("Table"));
+        }else{
+            Destroy(GameObject.Find("Table(Clone)"));
+        }   
+        GameObject new_Table = Instantiate(TablePrefab,new Vector3(-504.9432f,150.2171f,-266.1887f) , Quaternion.identity) as GameObject;
+        new_Table.transform.SetParent (CanvasReference.transform, false);
+        Content = new_Table.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
     }
 
 }

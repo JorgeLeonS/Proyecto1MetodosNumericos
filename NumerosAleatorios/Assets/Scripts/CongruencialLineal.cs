@@ -17,8 +17,10 @@ public class CongruencialLineal : MonoBehaviour
     public GameObject Numero_aleatorio;
     public GameObject Ri;
     public GameObject Content;
-
+    public GameObject TablePrefab;
+    public GameObject CanvasReference;
     public void generarNumeros(){
+        resetTable();
         int x0 = int.Parse(x0Input.text);
         int a = int.Parse(aInput.text);
         int c = int.Parse(cInput.text);
@@ -72,15 +74,26 @@ public class CongruencialLineal : MonoBehaviour
         Ri.GetComponent<Text>().text= ri.ToString("0.000");
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void resetValues(){
+
+        x0Input.text = "";
+        aInput.text = "";
+        cInput.text = "";
+        mInput.text = "";
+        nInput.text = "";
         
+        resetTable();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void resetTable(){
+        if (GameObject.Find("Table")){
+            Destroy(GameObject.Find("Table"));
+        }else{
+            Destroy(GameObject.Find("Table(Clone)"));
+        }   
+        GameObject new_Table = Instantiate(TablePrefab,new Vector3(-504.9432f,150.2171f,-266.1887f) , Quaternion.identity) as GameObject;
+        new_Table.transform.SetParent (CanvasReference.transform, false);
+        Content = new_Table.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
     }
+
 }

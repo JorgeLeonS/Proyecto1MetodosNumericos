@@ -11,9 +11,8 @@ public class Menu : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
+    public void exit(){
+        Application.Quit();
     }
 
     public void changeScene(string nombre)

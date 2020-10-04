@@ -8,10 +8,8 @@ public class CongruencialLinealCombinado : MonoBehaviour
 
     public InputField xInput;
     public InputField yInput;
-
     public InputField a1Input;
     public InputField a2Input;
-    // public InputField cInput;
     public InputField m1Input;
     public InputField m2Input;
     public InputField m3Input;
@@ -22,8 +20,11 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public GameObject Numero_aleatorio;
     public GameObject Ri;
     public GameObject Content;
+    public GameObject TablePrefab;
+    public GameObject CanvasReference;
 
     public void generarNumeros(){
+        resetTable();
         int x0 = int.Parse(xInput.text);
         int y0 = int.Parse(yInput.text);
         int a1 = int.Parse(a1Input.text);
@@ -77,15 +78,27 @@ public class CongruencialLinealCombinado : MonoBehaviour
         Ri.GetComponent<Text>().text= w.ToString();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public void resetValues(){
+
+        xInput.text = "";
+        yInput.text = "";
+        a1Input.text = "";
+        a2Input.text = "";
+        m1Input.text = "";
+        m2Input.text = "";
+        m3Input.text = "";
         
+        resetTable();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void resetTable(){
+        if (GameObject.Find("Table")){
+            Destroy(GameObject.Find("Table"));
+        }else{
+            Destroy(GameObject.Find("Table(Clone)"));
+        }   
+        GameObject new_Table = Instantiate(TablePrefab,new Vector3(-504.9432f,150.2171f,-266.1887f) , Quaternion.identity) as GameObject;
+        new_Table.transform.SetParent (CanvasReference.transform, false);
+        Content = new_Table.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
     }
 }
