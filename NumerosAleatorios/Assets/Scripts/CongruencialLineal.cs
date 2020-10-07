@@ -21,11 +21,11 @@ public class CongruencialLineal : MonoBehaviour
     public GameObject CanvasReference;
     public void generarNumeros(){
         resetTable();
-        int x0 = int.Parse(x0Input.text);
-        int a = int.Parse(aInput.text);
-        int c = int.Parse(cInput.text);
-        int m = int.Parse(mInput.text);
-        int n = int.Parse(nInput.text);
+        long x0 = int.Parse(x0Input.text);
+        long a = int.Parse(aInput.text);
+        long c = int.Parse(cInput.text);
+        long m = int.Parse(mInput.text);
+        long n = int.Parse(nInput.text);
 
         string x0String = x0Input.text;
 
@@ -33,11 +33,11 @@ public class CongruencialLineal : MonoBehaviour
 
         //Se repite las veces que quiera el usuario
         for(int i = 0;i<n;i++){
-            int generador = ((x0 * a) + c);
+            long generador = ((x0 * a) + c);
 
             print("Generador "+generador);
 
-            int aleatorio = generador % m;
+            long aleatorio = generador % m;
 
             float aleatorio_float  = (float)aleatorio;
             float  m_float = (float)m;

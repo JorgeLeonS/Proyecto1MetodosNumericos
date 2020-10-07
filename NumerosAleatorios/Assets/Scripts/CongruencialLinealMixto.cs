@@ -29,10 +29,23 @@ public class CongruencialLinealMixto : MonoBehaviour
         int m = int.Parse(mInput.text);
         int n = m;
 
-        if(!HullDobell(a,c,m)){
-            HullDobelltext.GetComponent<Text>().text = "No jalo";
+        int resultado = HullDobell(a,c,m);
+
+        if(resultado != 0){
+            switch(resultado){
+                case 1:
+                    HullDobelltext.GetComponent<Text>().text = "No se puede, porque c y m no son primos relativos";
+                    break;
+                case 2:
+                    HullDobelltext.GetComponent<Text>().text = "No se puede, porque q no es un número primo que divide a m";
+                    break;
+                case 3:
+                    HullDobelltext.GetComponent<Text>().text = "No se puede, porque 4 no puede dividir a (a-1)";
+                    break;
+            }
+            
         }else{
-            HullDobelltext.GetComponent<Text>().text = "Ta bien";
+            HullDobelltext.GetComponent<Text>().text = "Si pasa las pruebas de Hull-Dobell";
             string x0String = x0Input.text;
 
             // print(x0 + a + c + m);
@@ -60,23 +73,23 @@ public class CongruencialLinealMixto : MonoBehaviour
 
     }
 
-    public bool HullDobell(int a, int c, int m){
+    public int HullDobell(int a, int c, int m){
         // Sea c y m primos relativo
-        if(Mcd(c,m) != 1) return false;
+        if(Mcd(c,m) != 1) return 1;
 
         List<int> primeNumbers = new List<int>();
 
         primeNumbers = PrimeFactors(m);
 
         for (int i = 0; i < primeNumbers.Count; i++) {
-            if ((a - 1) % primeNumbers[i] != 0) return false;
+            if ((a - 1) % primeNumbers[i] != 0) return 2;
         }
 
         if (m % 4 == 0) {
-            if ((a - 1) % 4 != 0) return false;
+            if ((a - 1) % 4 != 0) return 3;
         }
 
-        return true;
+        return 0;
 
     }
 

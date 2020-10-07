@@ -8,7 +8,7 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
     public InputField x0Input;
     public InputField aInput;
     public InputField mInput;
-    public InputField nInput;
+    // public InputField nInput;
 
     public GameObject Row;
     public GameObject Semilla;
@@ -26,23 +26,40 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
         int a = int.Parse(aInput.text);
         // int c = int.Parse(cInput.text);
         int m = int.Parse(mInput.text);
-        int n = int.Parse(nInput.text);
+        // int n = int.Parse(nInput.text);
 
         string x0String = x0Input.text;
+
+
+        int generador = ((x0 * a));
+        print("Generador "+generador);
+        int aleatorio = generador % m;
+        float aleatorio_float  = (float)aleatorio;
+        float  m_float = (float)m;
+        float ri = aleatorio_float / m_float;
+
+        int x01 = x0;
+        int generador1 = generador;
+        int aleatorio1 = aleatorio;
+        float ri1 = ri;
+
+        createNewRow(x0.ToString(), generador.ToString(), aleatorio.ToString(), ri);
+        x0 = aleatorio;
 
         // print(x0 + a + c + m);
 
         //Se repite las veces que quiera el usuario
-        for(int i = 0;i<n;i++){
-            int generador = ((x0 * a));
+        // for(int i = 0;i<n;i++){
+        do{
+            generador = ((x0 * a));
 
             print("Generador "+generador);
 
-            int aleatorio = generador % m;
+            aleatorio = generador % m;
 
-            float aleatorio_float  = (float)aleatorio;
-            float  m_float = (float)m;
-            float ri = aleatorio_float / m_float;
+            aleatorio_float  = (float)aleatorio;
+            m_float = (float)m;
+            ri = aleatorio_float / m_float;
 
             createNewRow(x0.ToString(), generador.ToString(), aleatorio.ToString(), ri);
 
@@ -50,7 +67,18 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
             print("ri"+ri.ToString("0.000"));
 
             x0 = aleatorio;
-        }
+        }while(x01 != x0 && generador1 != generador && aleatorio1 != aleatorio && ri1 != ri);
+        generador = ((x0 * a));
+
+            print("Generador "+generador);
+
+            aleatorio = generador % m;
+
+            aleatorio_float  = (float)aleatorio;
+            m_float = (float)m;
+            ri = aleatorio_float / m_float;
+
+            createNewRow(x0.ToString(), generador.ToString(), aleatorio.ToString(), ri);
 
 
 
@@ -81,7 +109,7 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
         x0Input.text = "";
         aInput.text = "";
         mInput.text = "";
-        nInput.text = "";
+        // nInput.text = "";
         
         resetTable();
     }

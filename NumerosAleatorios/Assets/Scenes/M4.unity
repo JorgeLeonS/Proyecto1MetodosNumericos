@@ -1431,7 +1431,6 @@ MonoBehaviour:
   x0Input: {fileID: 1732590201}
   aInput: {fileID: 992289767}
   mInput: {fileID: 1970065142}
-  nInput: {fileID: 2124848674}
   Row: {fileID: 4929514304384572827, guid: ff4ee1514a4f9b30da256ac8c5e05441, type: 3}
   Semilla: {fileID: 0}
   Generador: {fileID: 0}
@@ -3060,7 +3059,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2124848671
 RectTransform:
   m_ObjectHideFlags: 0
