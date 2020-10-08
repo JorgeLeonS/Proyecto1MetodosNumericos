@@ -6,12 +6,16 @@ using UnityEngine.UI;
 public class CongruencialLinealCombinado : MonoBehaviour
 {
 
+    public InputField xnInput;
+    public GameObject Header;
+    public GameObject HeaderItem;
+    public Button siguienteButton;
+    public Button enterButton;
+    
+
     public InputField xInput;
-    public InputField yInput;
     public InputField a1Input;
-    public InputField a2Input;
     public InputField m1Input;
-    public InputField m2Input;
     public InputField m3Input;
 
     public GameObject Row;
@@ -26,37 +30,49 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public void generarNumeros(){
         resetTable();
         int x0 = int.Parse(xInput.text);
-        int y0 = int.Parse(yInput.text);
         int a1 = int.Parse(a1Input.text);
-        int a2 = int.Parse(a2Input.text);
         int m1 = int.Parse(m1Input.text);
-        int m2 = int.Parse(m2Input.text);
         int m3 = int.Parse(m3Input.text);
 
         int xn = x0;
-        int yn = y0;
 
         int contador = 0;
         int w = 0;
 
-        do{
-            if(xn-yn < 0){
-                w = m3 - Mathf.Abs(xn-yn);
-            }else{
-                w = (xn - yn) % m3;
-            }
+        // do{
+        //     if(xn-yn < 0){
+        //         w = m3 - Mathf.Abs(xn-yn);
+        //     }else{
+        //         w = (xn - yn) % m3;
+        //     }
 
-            createNewRow(contador, xn, yn, w);
-            contador++;
+        //     createNewRow(contador, xn, yn, w);
+        //     contador++;
 
-            xn = (a1*xn) % m1;
-            print("xn"+xn);
-            yn = (a2*yn) % m2;
-            print("yn"+yn);
+        //     xn = (a1*xn) % m1;
+        //     print("xn"+xn);
+        //     yn = (a2*yn) % m2;
+        //     print("yn"+yn);
             
 
-        }while(xn != x0 || yn != y0);
+        // }while(xn != x0 || yn != y0);
 
+    }
+
+    public void createColumns(){
+
+        siguienteButton.interactable = true;
+        enterButton.interactable = false;
+
+        int xn = int.Parse(xnInput.text);
+
+        for(int i=0; i<xn;i++){
+            //Instanciar nueva fila
+            GameObject new_col = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
+            //Unirla a la tabla
+            new_col.transform.SetParent (Header.transform, false);
+            new_col.GetComponent<Text>().text ="X"+i;
+        }
     }
 
     public void createNewRow(int c, int x, int y, int w){
@@ -81,11 +97,8 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public void resetValues(){
 
         xInput.text = "";
-        yInput.text = "";
         a1Input.text = "";
-        a2Input.text = "";
         m1Input.text = "";
-        m2Input.text = "";
         m3Input.text = "";
         
         resetTable();
