@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class CongruencialLinealCombinado : MonoBehaviour
 {
@@ -11,12 +12,18 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public GameObject HeaderItem;
     public Button siguienteButton;
     public Button enterButton;
+    public Button generarButton;
     
-
     public InputField xInput;
     public InputField a1Input;
     public InputField m1Input;
     public InputField m3Input;
+
+    public List<int> xInputs = new List<int>();
+    public List<int> aInputs = new List<int>();
+    public List<int> mInputs = new List<int>();
+
+    public int numInputs = 0;
 
     public GameObject Row;
     public GameObject Semilla;
@@ -27,46 +34,79 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public GameObject TablePrefab;
     public GameObject CanvasReference;
 
+    public float calcularW(List<int> xInputs, int m3){
+        float w = 0;
+        float sumW = 0;
+        // Para conocer w y si se suma o restan las xi
+        for(int i = 0; i<xInputs.Count;i++){
+            sumW += Mathf.Pow(-1, (float)i)*xInputs[i];
+        }
+        if(sumW<0){
+            w = m3 - Mathf.Abs(sumW);
+        }else{
+            w = sumW % m3;
+        }
+        return w;
+    }
+
     public void generarNumeros(){
-        resetTable();
-        int x0 = int.Parse(xInput.text);
-        int a1 = int.Parse(a1Input.text);
-        int m1 = int.Parse(m1Input.text);
+        List<int> xActuales = new List<int>();
+        // resetTable();
         int m3 = int.Parse(m3Input.text);
 
-        int xn = x0;
 
         int contador = 0;
-        int w = 0;
+        float w = 0;
+        float wOriginal = 0;
+        float sumW = 0;
 
-        // do{
-        //     if(xn-yn < 0){
-        //         w = m3 - Mathf.Abs(xn-yn);
-        //     }else{
-        //         w = (xn - yn) % m3;
-        //     }
+        bool variableEqual = false;
 
-        //     createNewRow(contador, xn, yn, w);
-        //     contador++;
+        w = calcularW(xInputs, m3);
+        wOriginal = w;
 
-        //     xn = (a1*xn) % m1;
-        //     print("xn"+xn);
-        //     yn = (a2*yn) % m2;
-        //     print("yn"+yn);
+        createNewRow(xInputs, w, contador);
+
+        List<int> xTemporales = new List<int>(xInputs);
+
+        do{
+            contador++;
+
+            // Calculo para las xi
+            for(int i = 0; i<xInputs.Count;i++){
+                xActuales.Add((xTemporales[i] * aInputs[i]) % mInputs[i]);
+                print(xActuales[i]);
+            }
             
+            w = calcularW(xActuales, m3);
 
-        // }while(xn != x0 || yn != y0);
+            variableEqual = true;
+            // // Se repiten los aleatorios
+            for(int i = 0; i<xInputs.Count; i++){
+                variableEqual= (variableEqual&&(xActuales[i]==xInputs[i]));
+            }
 
+            print(variableEqual);
+
+            createNewRow(xActuales, w, contador);
+            xTemporales = new List<int>(xActuales);
+            xActuales.Clear();
+        }while(!variableEqual);
     }
 
     public void createColumns(){
 
         siguienteButton.interactable = true;
+        xInput.interactable = true;
+        a1Input.interactable = true;
+        m1Input.interactable = true;
+
         enterButton.interactable = false;
+        xnInput.interactable = false;
 
-        int xn = int.Parse(xnInput.text);
+        numInputs = int.Parse(xnInput.text);
 
-        for(int i=0; i<xn;i++){
+        for(int i=0; i<numInputs;i++){
             //Instanciar nueva fila
             GameObject new_col = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
             //Unirla a la tabla
@@ -75,43 +115,64 @@ public class CongruencialLinealCombinado : MonoBehaviour
         }
     }
 
-    public void createNewRow(int c, int x, int y, int w){
-        //Instanciar nueva fila
-        GameObject new_row = Instantiate(Row,new Vector3(0,0,0) , Quaternion.identity) as GameObject;
-        //Unirla a la tabla
-        new_row.transform.SetParent (Content.transform, false);
-        
-        //Unir los objetos de texto con el codigo
-        Semilla = new_row.transform.Find("Semilla").gameObject;
-        Generador = new_row.transform.Find("Generador").gameObject;
-        Numero_aleatorio = new_row.transform.Find("Numero aleatorio").gameObject;
-        Ri = new_row.transform.Find("Ri").gameObject;
+    public void siguienteAction(){
+        numInputs--;
+        int x = int.Parse(xInput.text);
+        int a = int.Parse(a1Input.text);
+        int m = int.Parse(m1Input.text);
+        print("x: "+x+" a: "+a+" m: "+m);
 
-        //Poner los valores correspondientes
-        Semilla.GetComponent<Text>().text =c.ToString();
-        Generador.GetComponent<Text>().text = x.ToString();
-        Numero_aleatorio.GetComponent<Text>().text = y.ToString();
-        Ri.GetComponent<Text>().text= w.ToString();
-    }
-
-    public void resetValues(){
+        xInputs.Add(x);
+        aInputs.Add(a);
+        mInputs.Add(m);
 
         xInput.text = "";
         a1Input.text = "";
         m1Input.text = "";
-        m3Input.text = "";
         
-        resetTable();
+        print(numInputs);
+
+        if(numInputs==0){
+            siguienteButton.interactable = false;
+            xInput.interactable = false;
+            a1Input.interactable =false;
+            m1Input.interactable =false;
+            m3Input.interactable =true;
+            generarButton.interactable = true;
+        }
     }
 
-    public void resetTable(){
-        if (GameObject.Find("Table")){
-            Destroy(GameObject.Find("Table"));
-        }else{
-            Destroy(GameObject.Find("Table(Clone)"));
-        }   
-        GameObject new_Table = Instantiate(TablePrefab,new Vector3(-504.9432f,150.2171f,-266.1887f) , Quaternion.identity) as GameObject;
-        new_Table.transform.SetParent (CanvasReference.transform, false);
-        Content = new_Table.transform.GetChild(1).GetChild(0).GetChild(0).gameObject;
+    public void createNewRow(List<int> xn, float w, int contador){
+        //Instanciar nueva fila
+        GameObject new_row = Instantiate(Row,new Vector3(0,0,0) , Quaternion.identity) as GameObject;
+        //Unirla a la tabla
+        new_row.transform.SetParent (Content.transform, false);
+
+        // Instanciar fila para n
+        //Instanciar nueva fila
+        GameObject new_RowItemn = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
+        //Unirla a la tabla
+        new_RowItemn.transform.SetParent (new_row.transform, false);
+        new_RowItemn.GetComponent<Text>().text = contador.ToString();
+
+        // Instanciar fila para w
+        //Instanciar nueva fila
+        GameObject new_RowItemw = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
+        //Unirla a la tabla
+        new_RowItemw.transform.SetParent (new_row.transform, false);
+        new_RowItemw.GetComponent<Text>().text = w.ToString();
+        
+        for(int i=0;i<xn.Count;i++){
+            //Instanciar nueva fila
+            GameObject new_RowItemx = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
+            //Unirla a la tabla
+            new_RowItemx.transform.SetParent (new_row.transform, false);
+            new_RowItemx.GetComponent<Text>().text =xn[i].ToString();
+        }
     }
+
+    public void resetValues(){
+        SceneManager.LoadScene("M5_1");
+    }
+
 }
