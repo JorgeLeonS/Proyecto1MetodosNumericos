@@ -29,6 +29,8 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
     public GameObject textChi;
     public GameObject textKol;
 
+    public GameObject Errortext;
+
     
 
     public void generarNumeros(){
@@ -41,6 +43,16 @@ public class CongruencialLinealMultiplicativo : MonoBehaviour
         // int c = int.Parse(cInput.text);
         int m = int.Parse(mInput.text);
         double s = double.Parse(significanciaInput.text);
+
+        if(x0<0 || a<0 || m<0 || s<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            x0 = Math.Abs(x0);
+            a = Math.Abs(a);
+            m = Math.Abs(m);
+            if(s<0){
+                s = s*-1;
+            }
+        }
         // int n = int.Parse(nInput.text);
 
         string x0String = x0Input.text;

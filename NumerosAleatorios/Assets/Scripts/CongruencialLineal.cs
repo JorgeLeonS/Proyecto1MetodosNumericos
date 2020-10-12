@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class CongruencialLineal : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class CongruencialLineal : MonoBehaviour
     public GameObject textChi;
     public GameObject textKol;
 
+    public GameObject Errortext;
+
+
 
 
     public void generarNumeros(){
@@ -33,6 +37,18 @@ public class CongruencialLineal : MonoBehaviour
         long m = int.Parse(mInput.text);
         long n = int.Parse(nInput.text);
         double s = double.Parse(significanciaInput.text);
+
+        if(x0<0 || a<0 || c<0 || m<0 || n<0 || s<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            x0 = Math.Abs(x0);
+            a = Math.Abs(a);
+            c = Math.Abs(c);
+            m = Math.Abs(m);
+            n = Math.Abs(n);
+            if(s<0){
+                s = s*-1;
+            }
+        }
 
         string x0String = x0Input.text;
 

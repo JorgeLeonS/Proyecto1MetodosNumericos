@@ -20,6 +20,7 @@ public class CongruencialLinealMixto : MonoBehaviour
     private GameObject Ri;
     public GameObject Content;
     public GameObject HullDobelltext;
+    public GameObject Errortext;
     public GameObject TablePrefab;
     public GameObject CanvasReference;
     public GameObject textChi;
@@ -34,6 +35,17 @@ public class CongruencialLinealMixto : MonoBehaviour
         int n = m;
         double s = double.Parse(significanciaInput.text);
 
+        if(x0<0 || a<0 || c<0 || m<0 || n<0 || s<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            x0 = Mathf.Abs(x0);
+            a = Mathf.Abs(a);
+            c = Mathf.Abs(c);
+            m = Mathf.Abs(m);
+            n = Mathf.Abs(n);
+            if(s<0){
+                s = s*-1;
+            }
+        }
         List<float> listResut = new List<float>();
 
         int resultado = HullDobell(a,c,m);

@@ -17,11 +17,18 @@ public class CuadradosMedios : MonoBehaviour
     public GameObject Numero_aleatorio;
     public GameObject Ri;
     public GameObject Content;
+    public GameObject Errortext;
     public void generarNumeros(){
         resetTable();
         //Recibir los input
         int semilla = int.Parse(semillaInput.text);
         int n = int.Parse(nInput.text);
+
+        if(semilla<0 || n<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            semilla = Mathf.Abs(semilla);
+            n = Mathf.Abs(n);
+        }
     
         //Se eleva al cuadrado
         float n_generado = Mathf.Pow(semilla,2);

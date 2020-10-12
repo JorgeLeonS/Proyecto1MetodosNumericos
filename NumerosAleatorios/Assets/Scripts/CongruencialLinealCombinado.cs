@@ -34,9 +34,12 @@ public class CongruencialLinealCombinado : MonoBehaviour
     public GameObject TablePrefab;
     public GameObject CanvasReference;
 
+    public GameObject Errortext;
+
     public float calcularW(List<int> xInputs, int m3){
         float w = 0;
         float sumW = 0;
+
         // Para conocer w y si se suma o restan las xi
         for(int i = 0; i<xInputs.Count;i++){
             sumW += Mathf.Pow(-1, (float)i)*xInputs[i];
@@ -54,6 +57,10 @@ public class CongruencialLinealCombinado : MonoBehaviour
         // resetTable();
         int m3 = int.Parse(m3Input.text);
 
+        if(m3<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            m3 = Mathf.Abs(m3);
+        }
 
         int contador = 0;
         float w = 0;
@@ -106,6 +113,11 @@ public class CongruencialLinealCombinado : MonoBehaviour
 
         numInputs = int.Parse(xnInput.text);
 
+        if(numInputs<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            numInputs = Mathf.Abs(numInputs);
+        }
+
         for(int i=0; i<numInputs;i++){
             //Instanciar nueva fila
             GameObject new_col = Instantiate(HeaderItem, new Vector3(0,0,0) , Quaternion.identity) as GameObject;
@@ -120,6 +132,14 @@ public class CongruencialLinealCombinado : MonoBehaviour
         int x = int.Parse(xInput.text);
         int a = int.Parse(a1Input.text);
         int m = int.Parse(m1Input.text);
+
+        if(x<0 || a<0 || m<0){
+            Errortext.GetComponent<Text>().text = "El programa no acepta números negativos, se pasarán a positivos.";
+            x = Mathf.Abs(x);
+            a = Mathf.Abs(a);
+            m = Mathf.Abs(m);
+        }
+
         print("x: "+x+" a: "+a+" m: "+m);
 
         xInputs.Add(x);
